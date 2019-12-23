@@ -1,9 +1,18 @@
+import "package:building/SQLiteDbProvider.dart";
 class Cost {
   String id;
   String title;
   String date;
   String desc;
 
+  String TableName="Cost";
+   String ScriptTable=
+      "CREATE TABLE Cost ("
+      "id INTEGER PRIMARY KEY,"
+      "title TEXT,"
+      "date TEXT,"
+      "date INTEGER"
+      ")";
   Cost({this.id, this.title, this.date, this.desc});
 
   Cost.fromJson(Map<String, dynamic> json) {
@@ -20,5 +29,19 @@ class Cost {
     data['date'] = this.date;
     data['desc'] = this.desc;
     return data;
+  }
+
+  insert(Cost cost) async {
+    final db = await SQLiteDbProvider.db.initDB();
+    var result = await db.rawInsert(
+        "INSERT Into Product (title, date, date, desc)"
+            " VALUES (?, ?, ?, ?, ?)",
+        [cost.title, cost.date, cost.desc]
+    );
+    return result;
+  }
+  delete(int id) async {
+    final db = await SQLiteDbProvider.db.initDB();
+    db.delete(TableName, where: "id = ?", whereArgs: [id]);
   }
 }
