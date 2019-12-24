@@ -10,8 +10,7 @@ class Cost {
       "CREATE TABLE Cost ("
       "id INTEGER PRIMARY KEY,"
       "title TEXT,"
-      "date TEXT,"
-      "date INTEGER"
+      "date TEXT"
       ")";
   Cost({this.id, this.title, this.date, this.desc});
 
@@ -34,8 +33,8 @@ class Cost {
   insert(Cost cost) async {
     final db = await SQLiteDbProvider.db.initDB();
     var result = await db.rawInsert(
-        "INSERT Into Product (title, date, date, desc)"
-            " VALUES (?, ?, ?, ?, ?)",
+        "INSERT Into Product (title, date, desc)"
+            " VALUES (?, ?, ?, ?)",
         [cost.title, cost.date, cost.desc]
     );
     return result;

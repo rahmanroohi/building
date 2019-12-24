@@ -22,7 +22,7 @@ class SQLiteDbProvider {
     getApplicationDocumentsDirectory();
     String path = join(documentsDirectory.path, "Bulding.db");
     return await openDatabase(
-        path, version: 1,
+        path, version: 4,
         onOpen: (db) {},
         onCreate: (Database db, int version) async {
           await db.execute(cost.ScriptTable);
