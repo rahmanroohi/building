@@ -1,4 +1,4 @@
-import 'package:building/screen/UnitScreenList.dart';
+import 'package:building/screen/CostScreenAdd.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: UnitScreenList(),
+      home: CostScreenAdd(),
     );
   }
 }

@@ -53,7 +53,7 @@ class Unit {
   Future<List<Unit>> getUserModelData(String filter) async {
     var dbClient = await SQLiteDbProvider.db.initDB();
     String sql;
-    sql = "SELECT name,unit FROM " + TableName +" where name like '%$filter%'";
+    sql = "SELECT name,unit FROM " + TableName ;
 
     var result = await dbClient.rawQuery(sql);
     if (result.length == 0)
@@ -64,6 +64,26 @@ class Unit {
         list.add(Unit.fromMap(result[i]));
       }
 
+    return list;
+  }
+
+  Future<List<String>> getUnitName() async {
+    var dbClient = await SQLiteDbProvider.db.initDB();
+    String sql;
+    sql = "SELECT name  FROM " + TableName ;
+
+    var result = await dbClient.rawQuery(sql);
+    if (result.length == 0)
+      return null;
+    List<String> list=new List<String>();
+    for(int i=0;i<result.length;i++)
+    {
+      list.add(Unit.fromMap(result[i]).name);
+    }
+
+   /* return result.map((Map<String, dynamic> row) {
+      return row["name"] as String;
+    }).toList();*/
     return list;
   }
 }

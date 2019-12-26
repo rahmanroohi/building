@@ -1,6 +1,7 @@
 import 'package:building/model/Unit.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:building/screen/UnitScreenAdd.dart';
 
 class UnitScreenList extends StatefulWidget {
   UnitScreenList({Key key}) : super(key: key);
@@ -26,6 +27,8 @@ class _UnitScreenList extends State<UnitScreenList> {
         builder: (context, snapshot) {
           if (!snapshot.hasData)
             return Center(child: CircularProgressIndicator());
+          _data=snapshot.data;
+
 
           return Column(
             children: <Widget>[
@@ -37,6 +40,7 @@ class _UnitScreenList extends State<UnitScreenList> {
                     child: TextField(
                       onChanged: (value) {
                         filter=value;
+                        onSearchTextChanged(value);
                       },
                       /* controller: editingController,*/
                       decoration: InputDecoration(
@@ -50,8 +54,8 @@ class _UnitScreenList extends State<UnitScreenList> {
               ),
               Expanded(
                   child: ListView(
-                children: snapshot.data
-                    .map((user) => filter == null || filter == "" ?Card(
+                children:filter == null || filter == "" ? _data
+                    .map((user) => Card(
                             child: ListTile(
                           title: Container(
                               margin: EdgeInsets.only(bottom: 5),
@@ -65,13 +69,58 @@ class _UnitScreenList extends State<UnitScreenList> {
                             user.unit,
                             textAlign: TextAlign.right,
                           ),
-                        )):new Container())
+                        )))
+                    .toList():_searchResult
+                    .map((user) => Card(
+                    child: ListTile(
+                      title: Container(
+                          margin: EdgeInsets.only(bottom: 5),
+                          child: Text(
+                            user.name,
+                            textAlign: TextAlign.right,
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          )),
+                      subtitle: Text(
+                        user.unit,
+                        textAlign: TextAlign.right,
+                      ),
+                    )))
                     .toList(),
               ))
             ],
           );
         },
-      ),
+      ),floatingActionButton: FloatingActionButton(
+              onPressed: () {
+                // Add your onPressed code here!
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => UnitScreenAdd()),
+                );
+              },
+              child: Icon(Icons.add),
+              backgroundColor: Colors.green,
+            ),
     )));
   }
+
+  List<Unit> _searchResult=new List<Unit>();
+  List<Unit> _data;
+  onSearchTextChanged(String text) async {
+    _searchResult.clear();
+    if (text.isEmpty) {
+      setState(() {});
+      return;
+    }
+
+    _data.forEach((userDetail) {
+      if (userDetail.name.contains(text) || userDetail.unit.contains(text))
+        _searchResult.add(userDetail);
+    });
+
+    setState(() {});
+  }
+
+
 }
