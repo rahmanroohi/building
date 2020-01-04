@@ -114,7 +114,8 @@ class _CostScreenAdd extends State<CostScreenAdd> {
 
                 ),
                 onPressed: (){
-
+                 if(name.text.length>0 && unit.text.length>0)
+                   {
                   unitDb.insert(new Unit(name:name.text,unit:unit.text )).then((value){
                     if(value>0)
                     {showDialog(
@@ -126,7 +127,21 @@ class _CostScreenAdd extends State<CostScreenAdd> {
                         buttonText: "تایید",
                       ),
                     );}
-                  });
+                  });}
+                 else
+                   {
+                     final snackBar = SnackBar(
+                       content: Text('Yay! A SnackBar!'),
+                       action: SnackBarAction(
+                         label: 'Undo',
+                         onPressed: () {
+                           // Some code to undo the change.
+                         },
+                       ),
+                     );
+
+
+                     Scaffold.of(context).showSnackBar(snackBar);}
                   /*if(>-1)
                        {
                         *//* showDialog(
